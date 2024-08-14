@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EF Express - Online Yemek Siparişi</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Bootstrap Icons CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/anasayfa.css">
+</head>
+<body>
+<nav class="sidebar col-2 bg-dark">
+    <div class="p-3">
+        <a href="efexpress.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-light text-decoration-none">
+            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+            <span class="fs-4">EF Express</span></a>
+        <hr class="bg-light">
+        <ul class="nav flex-column mb-auto">
+            <li class="nav-item">
+                <a href="#" class="nav-link active" onclick="showAllItems()">
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+                    Ana Sayfa</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="showCategory('Pizza')">
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#pizza"></use></svg>
+                    Pizza</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="showCategory('Hamburger')">
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#hamburger"></use></svg>
+                    Hamburger
+                </a></li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="showCategory('Kebap')">
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#kebab"></use></svg>
+                    Kebap
+                </a></li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="toggleAccountSettings()">
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#gear"></use></svg>
+                    Hesap Ayarları
+                </a></li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="toggleCart()">
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#cart3"></use></svg>
+                    Sepetim
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="main-content col-10">
+    <div class="p-3">
+        <h1 class="mb-4">Hoş Geldiniz!</h1>
+
+        <!-- Menu Items -->
+        <div class="row" id="menuItems">
+            <!-- Menu items will be dynamically added here -->
+        </div>
+        <!-- /Menu Items -->
+
+        <!-- Hesap Ayarları Formu -->
+        <div id="accountSettingsForm">
+            <h2>Hesap Ayarları</h2>
+            <form>
+                <div class="form-group">
+                    <label for="username">Kullanıcı Adı:</label>
+                    <input type="text" class="form-control" id="username" placeholder="Kullanıcı adınızı girin">
+                </div>
+                <div class="form-group">
+                    <label for="email">E-posta Adresi:</label>
+                    <input type="email" class="form-control" id="email" placeholder="E-posta adresinizi girin">
+                </div>
+                <div class="form-group">
+                    <label for="password">Şifre:</label>
+                    <input type="password" class="form-control" id="password" placeholder="Şifrenizi girin">
+                </div>
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+                <button type="button" class="btn btn-primary" onclick="logout()">Çıkış Yap</button>
+            </form>
+
+        </div>
+        <!-- /Hesap Ayarları Formu -->
+
+        <!-- Sepet Tablosu -->
+        <div class="row mt-5" id="cartContent" style="display:none;">
+            <div class="col">
+                <h3>Sepetim</h3>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Ürün Adı</th>
+                        <th scope="col">Adet</th>
+                        <th scope="col">Fiyat</th>
+                        <th scope="col">Toplam</th>
+                        <th scope="col">İşlem</th>
+                    </tr>
+                    </thead>
+                    <tbody id="cartItems">
+                    </tbody>
+                </table>
+                <div id="totalPrice"></div>
+            </div>
+        </div>
+        <!-- /Sepet Tablosu -->
+    </div>
+</div>
+
+<footer class="footer bg-dark py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <p class="mb-0">&copy; 2024 EF Express</p>
+            </div>
+            <div class="col-md-6 text-md-right">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item"><a href="#" class="text-light"><i class="bi bi-twitter"></i></a></li>
+                    <li class="list-inline-item"><a href="#" class="text-light"><i class="bi bi-instagram"></i></a></li>
+                    <li class="list-inline-item"><a href="#" class="text-light"><i class="bi bi-facebook"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- JavaScript Kodları -->
+<script>
+    // Global değişkenler
+    var loggedInUser = {
+        username: "Fatih Çağrı",
+        email: "fe438269@gmail.com",
+        password: "Fatih321@#",
+        address: "güngören mah. yapıt sok. no:3 daire:7 istanbul/Çekmeköy"
+    };
+
+    var cartItems = [];
+
+    // Sayfa yüklendiğinde tüm ürünleri göster
+    $(document).ready(function () {
+        showAllItems();
+    });
+
+    // Sepete ürün ekle
+    function addToCart(itemName, price) {
+        console.log(itemName + " sepete eklendi.");
+        var existingItem = cartItems.find(item => item.productName === itemName);
+        if (existingItem) {
+            existingItem.quantity++;
+        } else {
+            cartItems.push({
+                id: cartItems.length + 1,
+                productName: itemName,
+                quantity: 1,
+                price: price
+            });
+        }
+        alert(itemName + " sepete eklendi. Toplam " + (existingItem ? existingItem.quantity : 1) + " adet.");
+        showCartItems();
+    }
+
+    // Tüm ürünleri göster
+    function showAllItems() {
+        var menuItems = [
+            {
+                productName: 'Pizza Margherita',
+                description: 'Lezzetli mozzarella peyniri ve domates sosu ile yapılmış pizza.',
+                price: 15.99
+            },
+            {
+                productName: 'Pizza Pepperoni',
+                description: 'Bol pepperoni dilimleri ile hazırlanmış enfes pizza.',
+                price: 17.99
+            },
+            {
+                productName: 'Cheeseburger',
+                description: 'Miss gibi bir cheeseburger.',
+                price: 9.99
+            },
+            {
+                productName: 'Chicken Burger',
+                description: 'Miss gibi bir tavuk burger.',
+                price: 11.99
+            },
+            {
+                productName: 'Adana Kebap',
+                description: 'Güzel bir Adana kebap.',
+                price: 12.99
+            },
+            {
+                productName: 'Urfa Kebap',
+                description: 'Güzel bir Urfa kebap.',
+                price: 13.99
+            }
+        ];
+
+        displayMenuItems(menuItems);
+    }
+
+    // Kategoriye göre ürünleri göster
+    function showCategory(categoryName) {
+        var menuItems = [
+            {
+                productName: 'Pizza Margherita',
+                description: 'Lezzetli mozzarella peyniri ve domates sosu ile yapılmış pizza.',
+                price: 15.99,
+                category: 'Pizza'
+            },
+            {
+                productName: 'Pizza Pepperoni',
+                description: 'Bol pepperoni dilimleri ile hazırlanmış enfes pizza.',
+                price: 17.99,
+                category: 'Pizza'
+            },
+            {
+                productName: 'Cheeseburger',
+                description: 'Miss gibi bir cheeseburger.',
+                price: 9.99,
+                category: 'Hamburger'
+            },
+            {
+                productName: 'Chicken Burger',
+                description: 'Miss gibi bir tavuk burger.',
+                price: 11.99,
+                category: 'Hamburger'
+            },
+            {
+                productName: 'Adana Kebap',
+                description: 'Güzel bir Adana kebap.',
+                price: 12.99,
+                category: 'Kebap'
+            },
+            {
+                productName: 'Urfa Kebap',
+                description: 'Güzel bir Urfa kebap.',
+                price: 13.99,
+                category: 'Kebap'
+            }
+        ];
+
+        var filteredItems = menuItems.filter(function (item) {
+            return item.category && item.category.toLowerCase() === categoryName.toLowerCase();
+        });
+
+        displayMenuItems(filteredItems);
+    }
+
+    // Menu öğelerini görüntüle
+    function displayMenuItems(menuItems) {
+        var html = '';
+        menuItems.forEach(function (item, index) {
+            html += '<div class="col-lg-4 mb-4">';
+            html += '<div class="card menu-item">';
+            html += '<div class="card-body">';
+            html += '<h5 class="card-title">' + item.productName + ' - ' + item.price.toFixed(2) + ' TL</h5>';
+            html += '<p class="card-text">' + item.description + '</p>';
+            html += '<div class="d-flex justify-content-between align-items-center">';
+            html += '<button class="btn btn-success btn-sm" onclick="addToCart(\'' + item.productName + '\', ' + item.price + ')">Sepete Ekle</button>';
+            html += '<button class="btn btn-primary btn-sm ml-2" onclick="increaseQuantity(\'' + item.productName + '\')">+</button>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+        });
+        $('#menuItems').html(html);
+    }
+
+    // Ürün miktarını artır
+    function increaseQuantity(itemName) {
+        var item = cartItems.find(item => item.productName === itemName);
+        if (item) {
+            item.quantity++;
+            showCartItems();
+        }
+    }
+
+    // Sepet sayfasını göster veya gizle
+    function toggleCart() {
+        $('#cartContent').toggle();
+        if ($('#cartContent').is(':visible')) {
+            showCartItems();
+        }
+    }
+
+    // Sepete eklenen ürünleri listele
+    function showCartItems() {
+        var html = '';
+        var totalPrice = 0;
+        cartItems.forEach(function (item, index) {
+            var totalItemPrice = item.quantity * item.price;
+            totalPrice += totalItemPrice;
+            html += '<tr>';
+            html += '<th scope="row">' + (index + 1) + '</th>';
+            html += '<td>' + item.productName + '</td>';
+            html += '<td>' + item.quantity + '</td>';
+            html += '<td>' + item.price.toFixed(2) + '</td>';
+            html += '<td>' + totalItemPrice.toFixed(2) + '</td>';
+            html += '<td><button class="btn btn-danger btn-sm" onclick="removeFromCart(' + item.id + ')">Sil</button></td>';
+            html += '</tr>';
+        });
+        $('#cartItems').html(html);
+        $('#totalPrice').html('<h4>Toplam Tutar: ' + totalPrice.toFixed(2) + ' TL</h4>');
+    }
+
+    // Sepetten ürünü kaldır
+    function removeFromCart(itemId) {
+        cartItems = cartItems.filter(function (item) {
+            return item.id !== itemId;
+        });
+        showCartItems();
+    }
+
+    // Hesap Ayarları Formunu göster veya gizle
+    function toggleAccountSettings() {
+        var accountSettingsForm = $('#accountSettingsForm');
+        if (accountSettingsForm.is(':visible')) {
+            accountSettingsForm.hide();
+        } else {
+            accountSettingsForm.show();
+            // Hesap ayarları formunu gösterirken, giriş yapılan kullanıcının bilgilerini dolduralım
+            $('#username').val(loggedInUser.username);
+            $('#email').val(loggedInUser.email);
+            $('#password').val(loggedInUser.password);
+        }
+    }
+
+    // Çıkış yap
+    function logout() {
+        loggedInUser = null;
+        window.location.href = "efexpress.html";
+    }
+
+    $(document).ready(function () {
+        showAllItems();
+        // Hoş geldiniz mesajını uyarı olarak göster
+        alert("Hoş geldiniz!");
+    });
+</script>
+</body>
+
+</html>

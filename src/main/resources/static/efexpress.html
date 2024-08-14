@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/efexpress.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet">
+    <title>EF Express</title>
+</head>
+<body>
+<!-- Giriş kısmı -->
+<nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+        <a href="anasayfa.html"><h1>efExpress</h1></a>
+        <form class="d-flex" role="search">
+            <button type="button" onclick="kullaniciKaydet()">Kayıt ol</button>
+            <button type="button" onclick="girisYap()">Giriş yap</button>
+        </form>
+    </div>
+</nav>
+<!-- Kayıt formu -->
+<div id="kayit-sayfasi" class="content" style="display: none;">
+    <form id="kayit-form" onsubmit="return validateKayitForm();">
+        <label for="reg-username">Kullanıcı Adı:</label><br>
+        <input type="text" id="reg-username" name="username"><br>
+        <label for="reg-email">E-posta:</label><br>
+        <input type="email" id="reg-email" name="email"><br>
+        <label for="reg-phone">Telefon Numarası:</label><br>
+        <input type="tel" id="reg-phone" name="phone"><br>
+        <label for="reg-password">Şifre: </label>
+        <h6>(en az 8 karakter, büyük harf, küçük harf, rakam ve özel karakter içermelidir)</h6>
+        <input type="password" id="reg-password" name="password"><br><br>
+        <button type="submit">Kayıt Ol</button>
+    </form>
+</div>
+<!-- Giriş Yap Sayfası İçeriği -->
+<div id="giris-sayfasi" class="content" style="display: none;">
+    <main>
+        <h1>Giriş Yap</h1>
+        <form id="giris-form">
+            <label for="login-username">Kullanıcı Adı:</label><br>
+            <input type="text" id="login-username" name="username"><br>
+            <label for="login-password">Şifre:</label><br>
+            <input type="password" id="login-password" name="password"><br><br>
+            <button type="button" class="btn btn-primary" onclick="loginFormSubmit()">Giriş Yap</button>
+            <button type="button" onclick="sifremiUnuttum()">Şifremi Unuttum</button>
+        </form>
+    </main>
+</div>
+<!-- Şifremi Unuttum Sayfası İçeriği -->
+<div id="sifremi-unuttum-sayfasi" class="content" style="display: none;">
+    <main>
+        <h1>Şifremi Unuttum</h1>
+        <form id="sifremi-unuttum-form" onsubmit="submitResetRequest(); return false;">
+            <label for="unuttum-email">E-posta Adresi:</label><br>
+            <input type="email" id="unuttum-email" name="email"><br>
+            <label for="dogrulama-kodu">Doğrulama Kodu:</label><br>
+            <input type="text" id="dogrulama-kodu" name="verificationCode"><br>
+            <button type="submit">Şifremi Sıfırla</button>
+            <button type="button" onclick="girisYap()">Geri</button>
+        </form>
+    </main>
+</div>
+<!-- Carousel ve Diğer İçerikler -->
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div class="d-flex align-items-center justify-content-center">
+                <img class="d-block banner image" src="https://cdn.yemek.com/mncrop/940/625/uploads/2020/06/sis-kofte-yemekcom.jpg" alt="First slide" style="max-width: 700px; height: auto;">
+            </div>
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Sis Kebap</h5>
+                <p>Lezzetli sis kebaplar...</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="d-flex align-items-center justify-content-center">
+                <img class="d-block banner image" src="https://image.milimaj.com/i/milliyet/75/0x410/5c8dcd3845d2a09e009fb6c3.jpg" alt="Second slide" style="max-width: 700px; height: auto;">
+            </div>
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Dolma</h5>
+                <p>Harika Dolmalar ...</p></div>
+        </div>
+        <div class="carousel-item">
+            <div class="d-flex align-items-center justify-content-center">
+                <img class="d-block banner image" src="https://cdn.yemek.com/mncrop/940/625/uploads/2023/03/sihil-mahsi-yemekcom.jpg" alt="Third slide" style="max-width: 700px; height: auto;">
+            </div>
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Biber dolması</h5>
+                <p>Lezzetli biber dolması sipariş edin ..</p>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<div class="efexpress-text">
+    <h2>EfExpress ile Lezzetli Yemeklere Yolculuk</h2>
+    <p>Yemek siparişi vermek artık daha kolay ve keyifli! efExpress platformu sayesinde favori restoranlarınızın menülerini gözden geçirebilir, özel indirimlerden faydalanabilir ve güvenli ödeme seçenekleri ile hızlıca siparişinizi tamamlayabilirsiniz. Üstelik, her tür damak zevkine uygun seçenekler arasından istediğinizi seçme özgürlüğüne sahipsiniz. yapmanız gereken tek şey kayıt olmak </p>
+</div>
+<div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <div class="col-md-4 d-flex align-items-center">
+            <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
+                <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+            </a>
+            <span class="mb-3 mb-md-0 text-body-secondary">© 2024 Company, Inc</span>
+        </div>
+
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+            <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+            <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+        </ul>
+    </footer>
+</div>
+
+<!-- Bootstrap JS ve jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- JavaScript -->
+<script>
+    // Kullanıcı kaydet butonuna tıklandığında kayıt sayfasını görüntüler, diğer sayfaları gizler
+    function kullaniciKaydet() {
+        document.getElementById("kayit-sayfasi").style.display = "block";
+        document.getElementById("giris-sayfasi").style.display = "none";
+        document.getElementById("sifremi-unuttum-sayfasi").style.display = "none";
+    }
+
+    // Giriş yap butonuna tıklandığında giriş sayfasını görüntüler, diğer sayfaları gizler
+    function girisYap() {
+        document.getElementById("giris-sayfasi").style.display = "block";
+        document.getElementById("kayit-sayfasi").style.display = "none";
+        document.getElementById("sifremi-unuttum-sayfasi").style.display = "none";
+    }
+
+    // Şifremi unuttum butonuna tıklandığında şifremi unuttum sayfasını görüntüler, diğer sayfaları gizler
+    function sifremiUnuttum() {
+        document.getElementById("sifremi-unuttum-sayfasi").style.display = "block";
+        document.getElementById("giris-sayfasi").style.display = "none";
+        document.getElementById("kayit-sayfasi").style.display = "none";
+    }
+
+    // Kayıt formunu doğrular ve boş alanları kontrol eder
+    function validateKayitForm() {
+        var username = document.getElementById("reg-username").value;
+        var email = document.getElementById("reg-email").value;
+        var phone = document.getElementById("reg-phone").value;
+        var password = document.getElementById("reg-password").value;
+
+        if (!username || !email || !phone || !password) {
+            alert("Lütfen tüm alanları doldurun.");
+            return false;
+        }
+
+        if (isNaN(phone)) {
+            alert("Telefon numarası sadece sayı içerebilir.");
+            return false;
+        }
+
+        if (password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/\d/.test(password) || !/[!@#$%^&*]/.test(password)) {
+            alert("Şifre en az 8 karakter içermeli ve büyük harf, küçük harf, rakam ve özel karakter içermelidir.");
+            return false;
+        }
+    }
+
+    // Giriş formunu kontrol eder ve kullanıcı adı ve şifreyi doğrular
+    function loginFormSubmit() {
+        var username = document.getElementById("login-username").value;
+        var password = document.getElementById("login-password").value;
+
+        // Kullanıcı bilgileri
+        var kullaniciBilgileri = [
+            { id: 10008, username: "fatih", password: "Fatih321@#" },
+            { id: 10009, username: "ahmet", password: "Ahmet12345!" },
+            { id: 10010, username: "mehmet", password: "Mehmet67890#" }
+            // Buraya veritabanından gelen kullanıcı bilgileri eklenecek
+        ];
+
+        // Kullanıcıyı bul
+        var kullanici = kullaniciBilgileri.find(function (kullanici) {
+            return kullanici.username === username && kullanici.password === password;
+        });
+
+        // Kullanıcı var mı kontrol et
+        if (kullanici) {
+            // Kullanıcı doğruysa anasayfaya yönlendir
+            window.location.href = "anasayfa.html";
+        } else {
+            alert("Kullanıcı adı veya şifre hatalı.");
+            return false;
+        }
+    }
+
+    // Kayıt formunu sunucuya gönderir ve başarı veya hata mesajları alır
+    const form = document.querySelector('#kayit-form');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        const username = formData.get('username');
+        const email = formData.get('email');
+        const phone = formData.get('phone');
+        const password = formData.get('password');
+
+        // Verileri sunucuya gönder
+        fetch('/kayit', {
+            method: 'POST',
+            body: new URLSearchParams({
+                username,
+                email,
+                phone,
+                password
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.text();
+            } else {
+                throw new Error('Kayıt işlemi sırasında bir hata oluştu.');
+            }
+        })
+        .then(data => {
+            // Başarı mesajı göster
+            alert(data);
+
+            // Formu temizle
+            form.reset();
+        })
+        .catch(error => {
+            // Hata mesajı göster
+            alert('Kayıt işlemi sırasında bir hata oluştu: ' + error.message);
+        });
+    });
+
+    // Şifre sıfırlama formunu dinleyen event listener
+    document.getElementById("sifremi-unuttum-form").addEventListener("submit", function(event) {
+        // Formun default submit işlemini engelle
+        event.preventDefault();
+
+        // E-posta adresini al
+        var email = document.getElementById("unuttum-email").value;
+
+        // Sunucuya AJAX isteği göndererek e-posta adresini iletebilirsin
+        fetch("/sifre-sifirla", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email: email })
+        })
+        .then(function(response) {
+            // Sunucudan gelen cevabı kontrol et
+            if (response.ok) {
+                // Başarılı ise kullanıcıya bilgi ver
+                alert("Şifre sıfırlama isteği başarıyla gönderildi.");
+            } else {
+                // Başarısız ise hata mesajını göster
+                alert("Şifre sıfırlama isteği gönderilirken bir hata oluştu.");
+            }
+        })
+        .catch(function(error) {
+            // Hata durumunda hata mesajını göster
+            alert("Bir hata oluştu: " + error.message);
+        });
+    });
+
+</script>
+
+</body>
+</html>

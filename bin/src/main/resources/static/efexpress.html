@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"  href="/css/efexpress.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <title>EF Express</title>
+</head>
+<body>
+<!-- Giriş kısmı -->
+<nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+        <h1>efExpress</h1>
+        <form class="d-flex" role="search">
+            <button onclick="kullaniciKaydet()" type="button" style="float: right;">Kayıt ol</button>
+            <button class="kullanıcı" type="button" onclick="girisYap()">Giriş yap</button>
+        </form>
+    </div>
+</nav>
+
+<!-- Kayıt Ol Sayfası İçeriği -->
+<div id="kayit-sayfasi" class="content" style="display: none;">
+    <!-- Kayıt formu -->
+    <form id="kayit-form" action="/kullanici/kayit" method="post" onsubmit="return validateKayitForm()">
+        <label for="username">Kullanıcı Adı:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="email">E-posta:</label><br>
+        <input type="email" id="email" name="email"><br>
+        <label for="phone">Telefon Numarası:</label><br>
+        <input type="tel" id="phone" name="phone"><br>
+        <label for="address">Adres:</label><br>
+        <textarea id="address" name="adres" rows="4"></textarea><br>
+        <label for="password">Şifre: </label>
+        <h6>(en az 8 karakter, büyük harf, küçük harf, rakam ve özel karakter içermelidir)</h6>
+        <input type="password" id="password" name="sifre"><br><br>
+        <button type="submit">Kayıt Ol</button>
+    </form>
+</div>
+<!-- Giriş Yap Sayfası İçeriği -->
+<div id="giris-sayfasi" class="content" style="display: none;">
+    <main>
+        <h1>Giriş Yap</h1>
+        <form id="giris-form" action="/kullanici/giris" method="post" onsubmit="return validateLoginForm()">
+            <label for="login-username">Kullanıcı Adı:</label><br>
+            <input type="text" id="login-username" name="username"><br>
+            <label for="login-password">Şifre:</label><br>
+            <input type="password" id="login-password" name="password"><br><br>
+            <button type="submit">Giriş Yap</button>
+            <button onclick="sifremiUnuttum()">Şifremi Unuttum</button>
+        </form>
+    </main>
+</div>
+
+<!-- Şifremi Unuttum Sayfası İçeriği -->
+<div id="sifremi-unuttum-sayfasi" class="content" style="display: none;">
+    <main>
+        <h1>Şifremi Unuttum</h1>
+        <form id="sifremi-unuttum-form" action="/kullanici/sifremi-unuttum" method="post" onsubmit="return validateSifremiUnuttumForm()">
+            <label for="unuttum-email">E-posta Adresi:</label><br>
+            <input type="email" id="unuttum-email" name="email"><br>
+            <button type="submit">Şifremi Sıfırla</button>
+            <button type="button" onclick="girisYap()">Geri</button>
+        </form>
+    </main>
+</div>
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div class="d-flex align-items-center justify-content-center">
+                <img class="d-block banner image" src="https://cdn.yemek.com/mncrop/940/625/uploads/2020/06/sis-kofte-yemekcom.jpg" alt="First slide" style="max-width: 700px; height: auto;">
+            </div>
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Sis Kebap</h5>
+                <p>Lezzetli sis kebaplar...</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="d-flex align-items-center justify-content-center">
+                <img class="d-block banner image" src="https://image.milimaj.com/i/milliyet/75/0x410/5c8dcd3845d2a09e009fb6c3.jpg" alt="Second slide" style="max-width: 700px; height: auto;">
+            </div>
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Dolma</h5>
+                <p>Harika Dolmalar ...</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="d-flex align-items-center justify-content-center">
+                <img class="d-block banner image" src="https://cdn.yemek.com/mncrop/940/625/uploads/2023/03/sihil-mahsi-yemekcom.jpg" alt="Third slide" style="max-width: 700px; height: auto;">
+            </div>
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Biber dolması</h5>
+                <p>Lezzetli biber dolması sipariş edin ..</p>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+
+<div class="efexpress-text">
+    <h2>EfExpress ile Lezzetli Yemeklere Yolculuk</h2>
+    <p>Yemek siparişi vermek artık daha kolay ve keyifli! efExpress platformu sayesinde favori restoranlarınızın menülerini gözden geçirebilir, özel indirimlerden faydalanabilir ve güvenli ödeme seçenekleri ile hızlıca siparişinizi tamamlayabilirsiniz. Üstelik, her tür damak zevkine uygun seçenekler arasından istediğinizi seçme özgürlüğüne sahipsiniz. yapmanız gereken tek şey kayıt olmak </p>
+</div>
+<div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <div class="col-md-4 d-flex align-items-center">
+            <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
+                <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+            </a>
+            <span class="mb-3 mb-md-0 text-body-secondary">© 2024 Company, Inc</span>
+        </div>
+
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+            <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+            <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+        </ul>
+    </footer>
+</div>
+
+<!-- Bootstrap JS ve jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function kullaniciKaydet() {
+        document.getElementById("kayit-sayfasi").style.display = "block";
+        document.getElementById("giris-sayfasi").style.display = "none";
+        document.getElementById("sifremi-unuttum-sayfasi").style.display = "none";
+    }
+
+    function girisYap() {
+        document.getElementById("giris-sayfasi").style.display = "block";
+        document.getElementById("kayit-sayfasi").style.display = "none";
+        document.getElementById("sifremi-unuttum-sayfasi").style.display = "none";
+    }
+
+    function sifremiUnuttum() {
+        document.getElementById("sifremi-unuttum-sayfasi").style.display = "block";
+        document.getElementById("giris-sayfasi").style.display = "none";
+        document.getElementById("kayit-sayfasi").style.display = "none";
+    }
+
+    function validateKayitForm() {
+        var username = document.getElementById("username").value;
+        var email = document.getElementById("email").value;
+        var phone = document.getElementById("phone").value;
+        var password = document.getElementById("password").value;
+
+        if (!username || !email || !phone || !password) {
+            alert("Lütfen tüm alanları doldurun.");
+            return false;
+        }
+
+        if (isNaN(phone)) {
+            alert("Telefon numarası sadece sayı içerebilir.");
+            return false;
+        }
+
+        if (password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/\d/.test(password) || !/[!@#$%^&*]/.test(password)) {
+            alert("Şifre en az 8 karakter içermeli ve büyük harf, küçük harf, rakam ve özel karakter içermelidir.");
+            return false;
+        }
+
+        return true; // Form submit edilsin.
+    }
+
+    function validateLoginForm() {
+        var username = document.getElementById("login-username").value;
+        var password = document.getElementById("login-password").value;
+
+        if (!username || !password) {
+            alert("Lütfen kullanıcı adı ve şifreyi girin.");
+            return false;
+        }
+
+        return true; // Form submit edilsin.
+    }
+
+    function validateSifremiUnuttumForm() {
+        var email = document.getElementById("unuttum-email").value;
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailPattern.test(email)) {
+            alert("Geçerli bir e-posta adresi girin.");
+            return false;
+        }
+
+        return true; // Form submit edilsin.
+    }
+
+    function anasayfayaYonlendir() {
+        window.location.href = "/anasayfa"; // Anasayfaya yönlendirme işlemi
+    }
+</script>
+
+</body>
+</html>

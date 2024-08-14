@@ -1,0 +1,166 @@
+/* efexpress.css */
+
+/* Base Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0; /* Remove default margin from body */
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: gray; /* Assuming this is the intended color */
+}
+
+/* Navigation Bar */
+.container-fluid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 10px;
+    color: #898989;
+    font-style: italic;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    font-family: 'Lobster', cursive;
+}
+
+.navbar-brand {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.kullanıcı {
+    padding: 10px 20px;
+}
+
+/* Content Area */
+.content {
+    max-width: 360px;
+    margin: 10px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Forms */
+form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="tel"],
+form input[type="password"] {
+    width: calc(100% - 22px); /* Genişlik hesaplaması */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    max-width: 200px; /* Maksimum genişlik belirleme */
+    text-align: center;
+}
+
+form .input-container,
+form .button-container {
+    text-align: center; /* Inputları ve butonları ortala */
+}
+
+form button,
+#sifremi-unuttum {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+form button:hover,
+#sifremi-unuttum:hover {
+    background-color: #218838;
+}
+
+/* Buttons */
+.auth-buttons button,
+#sifremi-unuttum {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.auth-buttons button:hover,
+#sifremi-unuttum:hover {
+    background-color: #0056b3;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* Carousel Centering */
+.carousel {
+    margin: 0 auto; /* Option 1 for centering */
+}
+
+.carousel-parent {
+    display: flex;
+    justify-content: center; /* Option 2 for centering (flexbox) */
+}
+
+/* Image Positioning (assuming the image is within a section) */
+.image-section {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Adjust margin as needed */
+}
+
+.image-section img {
+    max-width: 100%; /* Make images responsive */
+    height: auto; /* Preserve aspect ratio */
+    object-fit: contain; /* Fit image inside its container */
+}
+
+/* Image Styling */
+.banner {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin: 0 auto; /* Resmi ortala */
+}
+
+/* Text Styling */
+.efexpress-text {
+    max-width: 700px; /* Metin bölümünün maksimum genişliği */
+    margin: 20px auto; /* Metin bölümünü ortala */
+    text-align: left; /* Metni ortala */
+    font-family: Arial, sans-serif; /* Yazı tipi */
+}
+
+.efexpress-text h2 {
+    font-size: 24px; /* Başlık font boyutu */
+    margin-bottom: 20px; /* Başlık alt boşluğu */
+}
+
+.efexpress-text p {
+    line-height: 1.6; /* Satır yüksekliği */
+    margin-bottom: 15px; /* Paragraf alt boşluğu */
+/* Butonları navbar gibi hizala */
+}
+
+
+    .navbar .btn {
+        margin-right: 10px;
+         background-color: #777;
+    }
+

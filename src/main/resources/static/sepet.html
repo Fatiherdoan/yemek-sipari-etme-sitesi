@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sepet</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#" style="color: gray; font-family: 'Arial', 'Helvetica', sans-serif;">Efexpress Sepet</a>
+    </div>
+</nav>
+<!-- /Navbar -->
+
+<!-- Main Content -->
+<div class="container mt-5">
+    <h1>Sepetinizdeki Ürünler</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Ürün Adı</th>
+            <th scope="col">Miktar</th>
+            <th scope="col">Fiyat</th>
+        </tr>
+        </thead>
+        <tbody id="cartItems">
+        <!-- Sepete eklenen ürünler burada listelenecek -->
+        </tbody>
+    </table>
+</div>
+<!-- /Main Content -->
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // Sepete eklenen ürünlerin bilgileri
+    var cartItems = [];
+
+    // Sayfa yüklendiğinde sepete eklenen ürünleri listele
+    $(document).ready(function(){
+        // Sepet sayfasından gelen ürünleri al
+        var urlParams = new URLSearchParams(window.location.search);
+        var productName = urlParams.get('productName');
+        if (productName) {
+            addToCart(productName);
+        }
+        showCartItems();
+    });
+
+    // Sepete eklenen ürünleri listele
+    function showCartItems() {
+        var html = '';
+        cartItems.forEach(function(item, index) {
+            html += '<tr>';
+            html += '<th scope="row">' + (index + 1) + '</th>';
+            html += '<td>' + item.productName + '</td>';
+            html += '<td>' + item.quantity + '</td>';
+            html += '<td>' + item.price.toFixed(2) + '</td>';
+            html += '</tr>';
+        });
+        $('#cartItems').html(html);
+    }
+
+    // Sepete ürün ekle
+    function addToCart(itemName) {
+        console.log(itemName + " sepete eklendi.");
+        // Sepete ekleme işlemleri burada gerçekleştirilebilir
+        // Örnek olarak, cartItems dizisine yeni bir öğe ekleyelim
+        cartItems.push({ id: cartItems.length + 1, productName: itemName, quantity: 1, price: 10.99 });
+        // Sepet içeriğini güncellemek için fonksiyonu çağıralım
+        showCartItems();
+    }
+</script>
+
+</body>
+</html>
